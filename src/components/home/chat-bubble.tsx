@@ -6,6 +6,7 @@ import ReactPlayer from "react-player";
 import Image from "next/image";
 import { useState } from "react";
 import ChatAvatarActions from "./chat-avatar-actions";
+import { Dialog, DialogContent, DialogDescription } from "../ui/dialog";
 
 type ChatBubbleProps = {
   message: IMessage;
@@ -58,6 +59,13 @@ const ChatBubble = ({me, message, previousMessage}: ChatBubbleProps) => {
             {isGroup && <ChatAvatarActions me={me} message={message} />}
             <OtherMessageIndicator />
             {renderMessageContent()}
+            {open && (
+              <ImageDialog
+                src={message.content}
+                open={open}
+                onClose={() => setOpen(false)}
+              />
+            )}
             <MessageTime time={time} fromMe={fromMe} />
           </div>
         </div>
@@ -73,6 +81,13 @@ const ChatBubble = ({me, message, previousMessage}: ChatBubbleProps) => {
         >
           <SelfMessageIndicator />
           {renderMessageContent()}
+          {open && (
+            <ImageDialog
+              src={message.content}
+              open={open}
+              onClose={() => setOpen(false)}
+            />
+          )}
           <MessageTime time={time} fromMe={fromMe} />
         </div>
       </div>
@@ -139,6 +154,36 @@ export default ChatBubble;
          onClick={handleClick}
        />
      </div>
+   );
+ };
+
+ const ImageDialog = ({
+   src,
+   onClose,
+   open,
+ }: {
+   open: boolean;
+   src: string;
+   onClose: () => void;
+ }) => {
+   return (
+     <Dialog
+       open={open}
+       onOpenChange={(isOpen) => {
+         if (!isOpen) onClose();
+       }}
+     >
+       <DialogContent className="min-w-[750px]">
+         <DialogDescription className="relative h-[450px] flex justify-center">
+           <Image
+             src={src}
+             fill
+             className="rounded-lg object-contain"
+             alt="image"
+           />
+         </DialogDescription>
+       </DialogContent>
+     </Dialog>
    );
  };
 
