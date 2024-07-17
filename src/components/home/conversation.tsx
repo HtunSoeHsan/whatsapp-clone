@@ -11,7 +11,6 @@ const Conversation = ({ conversation }: { conversation: any }) => {
   const conversationName = conversation.groupName || conversation.name;
   const lastMessage = conversation.lastMessage;
   const lastMessageType = lastMessage?.messageType;
-  console.log("lastmsg:", lastMessageType);
   
   const me = useQuery(api.users.getMe);
   const { setSelectedConversation, selectedConversation } = useConversationStore();
